@@ -2,12 +2,19 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model
 import numpy as np
 import pretty_midi
-from absl import app
+from absl import app, flags
+
+FLAGS = flags.FLAGS
+
+flags.DEFINE_integer(
+    "nb_generated",
+    500,
+    "number of notes to be generated"
+)
+
 
 model_path = 'model'
-
 sequence_length = 20
-T_y_generated = 200
 
 
 def random_sequence():
@@ -19,7 +26,7 @@ def random_sequence():
     return X_ohe
 
 
-def generate_sequence(path, pattern):
+def generate_sequence(path, pattern, T_y_generated):
     note_l = []
     prediction_l = []
     model = load_model(path)
@@ -57,8 +64,9 @@ def create_audio(notes):
 
 
 def main(_):
+    nb_generated = FLAGS.nb_generated
     input = random_sequence()
-    note_l, pred_l = generate_sequence(model_path, input)
+    note_l, pred_l = generate_sequence(model_path, input, nb_generated)
     pred_audio = create_audio(note_l)
     pred_audio.write('pred_music.mid')
 
