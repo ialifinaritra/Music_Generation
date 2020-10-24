@@ -10,7 +10,6 @@ import tensorflow as tf
 n_x = 79
 max_T_x = 1000
 sequence_length = 20
-T_y_generated = 200
 
 NB_EPOCHS = 30
 PATH_FILE = 'data/'
